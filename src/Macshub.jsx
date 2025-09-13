@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
-import ContactForm from "./ContactForm.jsx";
+import ContactForm from "./ContactForm";
 
 
 /* ---------- ScrollToTop ---------- */
@@ -128,7 +128,6 @@ export default function MacsHub() {
                   </>
                 }
               />
-              <Route path="/contact" element={<Contact />} />
               <Route path="*" element={<NotFound />} />
               <Route path="/contact" element={<ContactForm />} />
             </Routes>
