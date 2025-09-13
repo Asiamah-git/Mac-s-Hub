@@ -37,7 +37,7 @@ export default function MacsHub() {
         {/* Logo Clickable */}
         <NavLink to="/" className="flex items-center gap-4 cursor-pointer">
           <img
-            src="logo.png"
+            src="/logo.png"
             alt="Mac's Hub Logo"
             className="h-40 w-auto object-contain" // 🔹 Bigger logo
           />
