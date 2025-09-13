@@ -234,15 +234,15 @@ function Promotions() {
 
   const flyers = [
     {
-      src: "./flyer1buscert.png",
+      src: "flyer1buscert.png",
       desc: "Exclusive Startup Growth Workshop — Join us this weekend!",
     },
     {
-      src: "./2.png",
+      src: "../2.png",
       desc: "Special consultancy package for first-time founders.",
     },
     {
-      src: "./3.png",
+      src: "3.png",
       desc: "Mac’s Hub client spotlight — see how we helped startups grow.",
     },
   ];
