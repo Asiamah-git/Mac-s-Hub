@@ -229,20 +229,22 @@ function Contact() {
 }
 
 /* ---------- Promotions Carousel ---------- */
+/* ---------- Promotions Carousel ---------- */
 function Promotions() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // ✅ Use images from /public/images/
   const flyers = [
     {
-      src: "../images/flyer1buscert.png",
+      src: "/images/flyer1buscert.png",
       desc: "Exclusive Startup Growth Workshop — Join us this weekend!",
     },
     {
-      src: "./images/2.png",
+      src: "/images/2.png",
       desc: "Special consultancy package for first-time founders.",
     },
     {
-      src: "./images/3.png",
+      src: "/images/3.png",
       desc: "Mac’s Hub client spotlight — see how we helped startups grow.",
     },
   ];
@@ -269,9 +271,9 @@ function Promotions() {
               <div key={idx} className="w-full flex-shrink-0">
                 <div className="h-[300px] md:h-[500px] w-full">
                   <img
-                     src={flyer.src}
+                    src={flyer.src}
                     alt={`Flyer ${idx + 1}`}
-                    className="w-full h-full object-contain;"
+                    className="w-full h-full object-contain"
                   />
                 </div>
                 <p className="p-5 text-sm text-gray-600 text-center bg-gray-50">
@@ -302,6 +304,7 @@ function Promotions() {
     </section>
   );
 }
+
 
 /* ---------- Gallery ---------- */
 function Gallery() {
