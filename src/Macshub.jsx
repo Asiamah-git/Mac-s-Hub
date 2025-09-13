@@ -139,7 +139,7 @@ export default function MacsHub() {
 
               {/* Phone */}
               <a
-                href="tel:+1234567890"
+                href="tel:+233550103277"
                 className="flex items-center gap-1 text-indigo-600 hover:underline"
               >
                 <Phone className="w-4 h-4" />
@@ -148,7 +148,7 @@ export default function MacsHub() {
 
               {/* WhatsApp */}
               <a
-                href="https://wa.me/1234567890"
+                href="https://wa.me/233550103277"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1 text-green-600 hover:underline"
@@ -159,7 +159,7 @@ export default function MacsHub() {
 
               {/* TikTok */}
               <a
-                href="https://www.tiktok.com/@yourusername"
+                href="https://www.tiktok.com/@macneroboss"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1 text-pink-600 hover:underline"
@@ -340,14 +340,14 @@ function Contact() {
         {/* Contact Links */}
         <div className="flex flex-col gap-4 text-gray-700">
           <a
-            href="tel:+1234567890"
+            href="tel:+233550103277"
             className="flex items-center gap-2 text-indigo-600 hover:underline"
           >
             <Phone className="w-5 h-5" />
-            +1 (234) 567-890
+            +233 (550) 103-277
           </a>
           <a
-            href="https://wa.me/1234567890"
+            href="https://wa.me/233550103277"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 text-green-600 hover:underline"
@@ -356,7 +356,7 @@ function Contact() {
             WhatsApp Chat
           </a>
           <a
-            href="https://www.tiktok.com/@yourusername"
+            href="https://www.tiktok.com/@macneroboss"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 text-pink-600 hover:underline"
