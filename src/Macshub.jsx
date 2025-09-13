@@ -145,9 +145,9 @@ export default function MacsHub() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-3">
               <img
-                src="images/logo.png"
+                src="images/newlogo.png"
                 alt="Mac's Hub Logo"
-                className="h-40 w-auto object-contain"
+                className="h-16 md:h-20 w-auto object-contain"
               />
               <span>© {new Date().getFullYear()} Mac's Hub</span>
             </div>
