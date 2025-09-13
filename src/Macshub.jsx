@@ -101,7 +101,7 @@ export default function MacsHub() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-3">
               <img
-                src="/logo.png"
+                src="images/logo.png"
                 alt="Mac's Hub Logo"
                 className="h-40 w-auto object-contain"
               />
@@ -312,12 +312,13 @@ function Gallery() {
     <section className="py-12">
       <SectionHeader eyebrow="Gallery" title="A glimpse of our journey" />
       <div className="mt-8 grid md:grid-cols-3 gap-6">
-        <GalleryImage src="https://source.unsplash.com/random/400x300?startup" alt="Startup work" />
-        <GalleryImage src="https://source.unsplash.com/random/400x300?team" alt="Team collaboration" />
-        <GalleryImage src="https://source.unsplash.com/random/400x300?business" alt="Business strategy" />
-        <GalleryImage src="https://source.unsplash.com/random/400x300?office" alt="Office space" />
-        <GalleryImage src="https://source.unsplash.com/random/400x300?meeting" alt="Client meeting" />
-        <GalleryImage src="https://source.unsplash.com/random/400x300?innovation" alt="Innovation" />
+       <GalleryImage src="/images/contract.jpg" alt="Mac's Hub Branding" />
+<GalleryImage src="/images/branded_meeting.png" alt="Collaboration and teamwork" />
+<GalleryImage src="/images/branded_discussion.png" alt="Strategic planning session" />
+<GalleryImage src="/images/office space.jpg" alt="Startup growth concept" />
+<GalleryImage src="/images/paperwork.jpg" alt="Document assistance" />
+<GalleryImage src="/images/team work.jpg" alt="Innovation and vision" />
+
       </div>
     </section>
   );
