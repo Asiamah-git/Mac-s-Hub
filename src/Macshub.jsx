@@ -234,7 +234,7 @@ function Promotions() {
 
   const flyers = [
     {
-      src: "./images/flyer1buscert.png",
+      src: "../images/flyer1buscert.png",
       desc: "Exclusive Startup Growth Workshop — Join us this weekend!",
     },
     {
