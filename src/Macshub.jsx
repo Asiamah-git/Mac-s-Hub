@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
-import ContactForm from "ContactForm";
+import ContactForm from "./ContactForm.jsx";
 
 
 /* ---------- ScrollToTop ---------- */
