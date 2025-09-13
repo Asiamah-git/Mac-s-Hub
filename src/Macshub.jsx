@@ -730,8 +730,6 @@ function ContactForm() {
   );
 }
 
-export default ContactForm;
-
 
 
 /* ---------- Tiny SVG TikTok Icon ---------- */
