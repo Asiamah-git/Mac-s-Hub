@@ -12,6 +12,8 @@ import {
   FileText,
   Menu,
   X,
+  Phone,
+  MessageCircle,
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -27,7 +29,7 @@ function ScrollToTop() {
 /* ---------- Main Layout ---------- */
 export default function MacsHub() {
   const location = useLocation();
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50 text-gray-900 antialiased">
@@ -36,7 +38,7 @@ export default function MacsHub() {
       {/* NAV */}
       <header className="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
         {/* Logo */}
-        <NavLink to="/" className="flex items-center gap-4 cursor-pointer">
+        <NavLink to="/" className="flex items-center gap-4">
           <img
             src="images/newlogo.png"
             alt="Mac's Hub Logo"
@@ -51,49 +53,23 @@ export default function MacsHub() {
           <NavItem to="/contact" label="Contact Us" isButton />
         </nav>
 
-        {/* Mobile Hamburger */}
+        {/* Mobile Menu Button */}
         <button
-          className="md:hidden p-2 rounded-lg bg-gray-100 hover:bg-gray-200"
-          onClick={() => setMenuOpen(!menuOpen)}
+          className="md:hidden p-2 rounded-lg border border-gray-200"
+          onClick={() => setMobileOpen(!mobileOpen)}
         >
-          {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </header>
 
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.nav
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-            className="md:hidden bg-white shadow-lg rounded-2xl mx-4 mt-2 p-6 flex flex-col gap-4 text-sm"
-          >
-            <NavLink
-              to="/about"
-              onClick={() => setMenuOpen(false)}
-              className="hover:text-indigo-600"
-            >
-              About Us
-            </NavLink>
-            <NavLink
-              to="/services"
-              onClick={() => setMenuOpen(false)}
-              className="hover:text-indigo-600"
-            >
-              Services
-            </NavLink>
-            <NavLink
-              to="/contact"
-              onClick={() => setMenuOpen(false)}
-              className="px-4 py-2 bg-indigo-600 text-white rounded-full text-center hover:opacity-95"
-            >
-              Contact Us
-            </NavLink>
-          </motion.nav>
-        )}
-      </AnimatePresence>
+      {/* Mobile Dropdown */}
+      {mobileOpen && (
+        <div className="md:hidden px-6 pb-4 space-y-3">
+          <NavItem to="/about" label="About Us" />
+          <NavItem to="/services" label="Services" />
+          <NavItem to="/contact" label="Contact Us" isButton />
+        </div>
+      )}
 
       {/* Routes with smooth transitions */}
       <main className="max-w-6xl mx-auto px-6">
@@ -151,12 +127,45 @@ export default function MacsHub() {
               />
               <span>© {new Date().getFullYear()} Mac's Hub</span>
             </div>
-            <div className="flex gap-4">
+
+            {/* Footer Links */}
+            <div className="flex gap-6 items-center">
               <a href="#" className="hover:text-gray-900">
                 Privacy
               </a>
               <a href="#" className="hover:text-gray-900">
                 Terms
+              </a>
+
+              {/* Phone */}
+              <a
+                href="tel:+1234567890"
+                className="flex items-center gap-1 text-indigo-600 hover:underline"
+              >
+                <Phone className="w-4 h-4" />
+                Call
+              </a>
+
+              {/* WhatsApp */}
+              <a
+                href="https://wa.me/1234567890"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 text-green-600 hover:underline"
+              >
+                <MessageCircle className="w-4 h-4" />
+                WhatsApp
+              </a>
+
+              {/* TikTok */}
+              <a
+                href="https://www.tiktok.com/@yourusername"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 text-pink-600 hover:underline"
+              >
+                <TikTokIcon className="w-4 h-4" />
+                TikTok
               </a>
             </div>
           </div>
@@ -173,14 +182,14 @@ function NavItem({ to, label, isButton }) {
       to={to}
       className={({ isActive }) =>
         isButton
-          ? `px-4 py-2 rounded-full font-medium transition-colors duration-300 ${
+          ? `block px-4 py-2 rounded-full font-medium transition-colors duration-300 ${
               isActive
                 ? "bg-indigo-700 text-white"
                 : "bg-indigo-600 text-white hover:opacity-95"
             }`
           : isActive
-          ? "text-indigo-600 font-semibold"
-          : "hover:text-gray-900 transition-colors duration-300"
+          ? "text-indigo-600 font-semibold block"
+          : "hover:text-gray-900 transition-colors duration-300 block"
       }
     >
       {label}
@@ -224,7 +233,10 @@ function About() {
 function Services() {
   return (
     <section className="py-12">
-      <SectionHeader eyebrow="What we do" title="À La Carte Services for Startups" />
+      <SectionHeader
+        eyebrow="What we do"
+        title="À La Carte Services for Startups"
+      />
       <div className="mt-8 grid md:grid-cols-3 gap-6">
         <ServiceCard
           icon={<Sparkles size={20} />}
@@ -320,17 +332,47 @@ function Contact() {
   return (
     <section className="py-12">
       <SectionHeader eyebrow="Contact" title="Let's work together" />
-      <div className="mt-6">
+
+      <div className="mt-6 grid gap-6 md:grid-cols-2">
+        {/* Contact Form */}
         <ContactForm />
+
+        {/* Contact Links */}
+        <div className="flex flex-col gap-4 text-gray-700">
+          <a
+            href="tel:+1234567890"
+            className="flex items-center gap-2 text-indigo-600 hover:underline"
+          >
+            <Phone className="w-5 h-5" />
+            +1 (234) 567-890
+          </a>
+          <a
+            href="https://wa.me/1234567890"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 text-green-600 hover:underline"
+          >
+            <MessageCircle className="w-5 h-5" />
+            WhatsApp Chat
+          </a>
+          <a
+            href="https://www.tiktok.com/@yourusername"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 text-pink-600 hover:underline"
+          >
+            <TikTokIcon className="w-5 h-5" />
+            TikTok Profile
+          </a>
+        </div>
       </div>
     </section>
   );
 }
 
-/* ---------- Promotions Carousel ---------- */
+/* ---------- Promotions ---------- */
 function Promotions() {
   const [currentIndex, setCurrentIndex] = useState(0);
-
   const flyers = [
     { src: "/images/flyer1buscert.png", desc: "Exclusive Startup Growth Workshop — Join us this weekend!" },
     { src: "/images/2.png", desc: "Special consultancy package for first-time founders." },
@@ -349,46 +391,34 @@ function Promotions() {
   return (
     <section className="py-12">
       <SectionHeader eyebrow="Promotions" title="Current Campaigns" />
-      {flyers.length > 0 && (
-        <div className="relative w-full max-w-5xl mx-auto overflow-hidden rounded-2xl shadow-lg bg-white">
-          <div
-            className="flex transition-transform duration-700 ease-in-out"
-            style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-          >
-            {flyers.map((flyer, idx) => (
-              <div key={idx} className="w-full flex-shrink-0">
-                <div className="h-[300px] md:h-[500px] w-full">
-                  <img
-                    src={flyer.src}
-                    alt={`Flyer ${idx + 1}`}
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-                <p className="p-5 text-sm text-gray-600 text-center bg-gray-50">
-                  {flyer.desc}
-                </p>
+      <div className="relative w-full max-w-5xl mx-auto overflow-hidden rounded-2xl shadow-lg bg-white">
+        <div
+          className="flex transition-transform duration-700 ease-in-out"
+          style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+        >
+          {flyers.map((flyer, idx) => (
+            <div key={idx} className="w-full flex-shrink-0">
+              <div className="h-[300px] md:h-[500px] w-full">
+                <img src={flyer.src} alt={`Flyer ${idx + 1}`} className="w-full h-full object-contain" />
               </div>
-            ))}
-          </div>
-
-          {/* Dots */}
-          {flyers.length > 1 && (
-            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
-              {flyers.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setCurrentIndex(idx)}
-                  className={`w-3 h-3 rounded-full ${
-                    idx === currentIndex
-                      ? "bg-indigo-600"
-                      : "bg-gray-300 hover:bg-gray-400"
-                  }`}
-                />
-              ))}
+              <p className="p-5 text-sm text-gray-600 text-center bg-gray-50">
+                {flyer.desc}
+              </p>
             </div>
-          )}
+          ))}
         </div>
-      )}
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
+          {flyers.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => setCurrentIndex(idx)}
+              className={`w-3 h-3 rounded-full ${
+                idx === currentIndex ? "bg-indigo-600" : "bg-gray-300 hover:bg-gray-400"
+              }`}
+            />
+          ))}
+        </div>
+      </div>
     </section>
   );
 }
@@ -416,18 +446,9 @@ function Testimonials() {
     <section className="py-12">
       <SectionHeader eyebrow="Trusted by" title="What founders say" />
       <div className="mt-8 grid md:grid-cols-3 gap-6">
-        <Testimonial
-          name="Lina — Co-founder"
-          quote="Mac's Hub helped us crystallize our product strategy and double activation in three months."
-        />
-        <Testimonial
-          name="Raj — CEO"
-          quote="They acted as an extension of our team — clear, fast, and measurable."
-        />
-        <Testimonial
-          name="Maya — Head of Growth"
-          quote="From hiring to experiments, their support was pivotal to our Series A."
-        />
+        <Testimonial name="Lina — Co-founder" quote="Mac's Hub helped us crystallize our product strategy and double activation in three months." />
+        <Testimonial name="Raj — CEO" quote="They acted as an extension of our team — clear, fast, and measurable." />
+        <Testimonial name="Maya — Head of Growth" quote="From hiring to experiments, their support was pivotal to our Series A." />
       </div>
     </section>
   );
@@ -438,9 +459,7 @@ function NotFound() {
   return (
     <section className="py-12 text-center">
       <h2 className="text-2xl font-bold">Page Not Found</h2>
-      <p className="mt-2 text-gray-600">
-        The page you’re looking for doesn’t exist.
-      </p>
+      <p className="mt-2 text-gray-600">The page you’re looking for doesn’t exist.</p>
     </section>
   );
 }
@@ -458,9 +477,7 @@ function SectionHeader({ eyebrow, title }) {
 function ServiceCard({ icon, title, desc }) {
   return (
     <article className="p-6 rounded-2xl bg-white shadow hover:shadow-lg transition-shadow">
-      <div className="w-12 h-12 rounded-md bg-indigo-50 flex items-center justify-center">
-        {icon}
-      </div>
+      <div className="w-12 h-12 rounded-md bg-indigo-50 flex items-center justify-center">{icon}</div>
       <h4 className="mt-4 font-semibold">{title}</h4>
       <p className="mt-2 text-sm text-gray-600">{desc}</p>
     </article>
@@ -498,31 +515,18 @@ function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="max-w-md w-full grid gap-3">
-      <input
-        name="name"
-        required
-        placeholder="Your name"
-        className="px-4 py-3 rounded-lg border border-gray-200"
-      />
-      <input
-        name="email"
-        type="email"
-        required
-        placeholder="Email"
-        className="px-4 py-3 rounded-lg border border-gray-200"
-      />
-      <textarea
-        name="message"
-        rows={4}
-        placeholder="Tell us about your challenge"
-        className="px-4 py-3 rounded-lg border border-gray-200"
-      />
-      <button
-        type="submit"
-        className="px-5 py-3 rounded-full bg-indigo-600 text-white font-medium"
-      >
-        Schedule call
-      </button>
+      <input name="name" required placeholder="Your name" className="px-4 py-3 rounded-lg border border-gray-200" />
+      <input name="email" type="email" required placeholder="Email" className="px-4 py-3 rounded-lg border border-gray-200" />
+      <textarea name="message" rows={4} placeholder="Tell us about your challenge" className="px-4 py-3 rounded-lg border border-gray-200" />
+      <button type="submit" className="px-5 py-3 rounded-full bg-indigo-600 text-white font-medium">Schedule call</button>
     </form>
+  );
+}
+
+function TikTokIcon({ className }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 448 512" className={className}>
+      <path d="M448,209.9a210,210,0,0,1-122.5-39.2V349.4c0,90.2-73.3,162.6-163.5,162.6A162.6,162.6,0,0,1,0,349.4c0-90.2,73.3-163.5,162.5-163.5a163.2,163.2,0,0,1,24.1,1.8v81.5a81.9,81.9,0,0,0-24.1-3.8A81.1,81.1,0,1,0,244,349.4V0h81.5a128.6,128.6,0,0,0,122.5,128.5Z"/>
+    </svg>
   );
 }
