@@ -1,3 +1,4 @@
+// MacsHub.jsx
 import React, { useState, useEffect } from "react";
 import { NavLink, Routes, Route, useLocation } from "react-router-dom";
 import {
@@ -16,6 +17,7 @@ import {
   MessageCircle,
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
+import { Helmet } from "react-helmet-async";
 
 /* ---------- ScrollToTop ---------- */
 function ScrollToTop() {
@@ -31,6 +33,11 @@ export default function MacsHub() {
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  useEffect(() => {
+    // close mobile menu on route change
+    setMobileOpen(false);
+  }, [location.pathname]);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50 text-gray-900 antialiased">
       <ScrollToTop />
@@ -38,16 +45,21 @@ export default function MacsHub() {
       {/* NAV */}
       <header className="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
         {/* Logo */}
-        <NavLink to="/" className="flex items-center gap-4">
+        <NavLink to="/" aria-label="Mac's Hub home" className="flex items-center gap-4">
           <img
-            src="images/newlogo.png"
+            src="/images/newlogo.png"
             alt="Mac's Hub Logo"
             className="h-16 md:h-20 w-auto object-contain"
+            style={{ imageRendering: "optimizeQuality" }}
           />
         </NavLink>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex gap-6 items-center text-sm text-gray-700">
+        <nav
+          className="hidden md:flex gap-6 items-center text-sm text-gray-700"
+          aria-label="Primary"
+        >
+          <NavItem to="/" label="Home" />
           <NavItem to="/about" label="About Us" />
           <NavItem to="/services" label="Services" />
           <NavItem to="/contact" label="Contact Us" isButton />
@@ -56,7 +68,10 @@ export default function MacsHub() {
         {/* Mobile Menu Button */}
         <button
           className="md:hidden p-2 rounded-lg border border-gray-200"
-          onClick={() => setMobileOpen(!mobileOpen)}
+          onClick={() => setMobileOpen((s) => !s)}
+          aria-controls="mobile-menu"
+          aria-expanded={mobileOpen}
+          aria-label={mobileOpen ? "Close menu" : "Open menu"}
         >
           {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
@@ -64,7 +79,8 @@ export default function MacsHub() {
 
       {/* Mobile Dropdown */}
       {mobileOpen && (
-        <div className="md:hidden px-6 pb-4 space-y-3">
+        <div id="mobile-menu" className="md:hidden px-6 pb-4 space-y-3" role="menu">
+          <NavItem to="/" label="Home" />
           <NavItem to="/about" label="About Us" />
           <NavItem to="/services" label="Services" />
           <NavItem to="/contact" label="Contact Us" isButton />
@@ -79,7 +95,7 @@ export default function MacsHub() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.45 }}
           >
             <Routes location={location} key={location.pathname}>
               <Route
@@ -121,9 +137,9 @@ export default function MacsHub() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-3">
               <img
-                src="images/newlogo.png"
+                src="/images/newlogo.png"
                 alt="Mac's Hub Logo"
-                className="h-16 md:h-20 w-auto object-contain"
+                className="h-12 md:h-14 w-auto object-contain"
               />
               <span>© {new Date().getFullYear()} Mac's Hub</span>
             </div>
@@ -141,9 +157,10 @@ export default function MacsHub() {
               <a
                 href="tel:+233550103277"
                 className="flex items-center gap-1 text-indigo-600 hover:underline"
+                aria-label="Call Mac's Hub"
               >
                 <Phone className="w-4 h-4" />
-                Call
+                +233 (550) 103-277
               </a>
 
               {/* WhatsApp */}
@@ -152,6 +169,7 @@ export default function MacsHub() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1 text-green-600 hover:underline"
+                aria-label="Chat on WhatsApp"
               >
                 <MessageCircle className="w-4 h-4" />
                 WhatsApp
@@ -163,6 +181,7 @@ export default function MacsHub() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1 text-pink-600 hover:underline"
+                aria-label="Visit TikTok profile"
               >
                 <TikTokIcon className="w-4 h-4" />
                 TikTok
@@ -197,34 +216,98 @@ function NavItem({ to, label, isButton }) {
   );
 }
 
-/* ---------- Pages ---------- */
+/* ---------- Pages & Sections ---------- */
+
 function Home() {
   return (
+    
     <section className="grid md:grid-cols-2 gap-8 items-center py-12">
+      <Helmet>
+  <title>Mac's Hub | Startup Consultancy & Founder Support</title>
+  <meta
+    name="description"
+    content="Mac's Hub helps founders validate ideas, launch faster, and scale smarter. Startup consultancy with product strategy, fractional leadership, and growth support."
+  />
+
+  {/* Open Graph */}
+  <meta property="og:title" content="Mac's Hub | Startup Consultancy & Founder Support" />
+  <meta property="og:description" content="Validate your idea, launch faster, and scale smarter with Mac's Hub." />
+  <meta property="og:image" content="/images/newlogo.png" />
+  <meta property="og:url" content="https://yourdomain.com/" />
+  <meta property="og:type" content="website" />
+
+  {/* Twitter */}
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Mac's Hub | Startup Consultancy & Founder Support" />
+  <meta name="twitter:description" content="We help founders go from idea to impact with practical consultancy and growth services." />
+  <meta name="twitter:image" content="/images/newlogo.png" />
+</Helmet>
+
       <div>
         <h1 className="text-4xl md:text-5xl font-extrabold leading-tight tracking-tight">
-          One partner. Infinite possibilities —{" "}
-          <span className="text-indigo-600">Mac's Hub</span>
+          One partner. Infinite possibilities.
+          <span className="text-indigo-600"> Mac's Hub</span>
         </h1>
-        <p className="mt-4 text-gray-600 max-w-xl">
-          We help early-stage startups shape product, strategy, and go-to-market
-          with practical advice, fractional leadership, and hands-on execution.
-          Built for founders who want clarity and speed.
+
+        {/* Tagline */}
+        <p className="mt-3 text-lg text-gray-700 max-w-xl font-medium">
+          We help founders move from idea to impact — faster, with less friction.
+        </p>
+
+        {/* Professional, convincing paragraph */}
+        <p className="mt-6 text-gray-600 max-w-2xl">
+          Mac's Hub is a focused consultancy for early-stage founders. We combine product strategy,
+          market insight, and experienced fractional leadership to design practical roadmaps and
+          execute the highest-impact work for your startup. Whether you need to validate product
+          direction, build initial traction, or prepare for investment, our pragmatic approach
+          delivers clarity and predictable next steps — no buzzwords, just measurable progress.
         </p>
       </div>
+
+      {/* Optional visual/hero card */}
+      <div className="rounded-2xl bg-white p-6 shadow flex items-center justify-center h-56">
+        <div className="text-center">
+          <div className="text-sm text-indigo-600 font-semibold">Trusted, practical help</div>
+          <h3 className="mt-2 text-xl font-bold">Fractional leaders • Product strategy • GTM</h3>
+          <p className="mt-3 text-sm text-gray-600 max-w-sm">
+            Work with experts who’ve shipped startups and led teams — short-term, high-impact engagements.
+          </p>
+        </div>
+      </div>
     </section>
+    
   );
 }
 
 function About() {
   return (
     <section className="py-12">
+      <Helmet>
+  <title>About Mac's Hub | Who We Are</title>
+  <meta
+    name="description"
+    content="Mac's Hub partners with ambitious founders to remove the guesswork from growth. Our team blends product, marketing, and operational expertise for measurable results."
+  />
+
+  {/* Open Graph */}
+  <meta property="og:title" content="About Mac's Hub | Who We Are" />
+  <meta property="og:description" content="Learn about Mac's Hub and how we help startups grow smarter with clarity, strategy, and execution." />
+  <meta property="og:image" content="/images/newlogo.png" />
+  <meta property="og:url" content="https://yourdomain.com/about" />
+  <meta property="og:type" content="website" />
+
+  {/* Twitter */}
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="About Mac's Hub | Who We Are" />
+  <meta name="twitter:description" content="Trusted consultancy for founders. Discover our mission and team." />
+  <meta name="twitter:image" content="/images/newlogo.png" />
+</Helmet>
+
       <SectionHeader eyebrow="About" title="Who we are" />
       <p className="mt-4 text-gray-600 max-w-3xl">
-        Mac's Hub is a consultancy designed for ambitious startup founders. We
-        combine product expertise, market insights, and hands-on leadership to
-        accelerate growth. Our mission is to make clarity, speed, and measurable
-        outcomes the norm for every founder we partner with.
+        Mac's Hub partners with ambitious founders to remove the guesswork from early-stage growth.
+        Our team blends product, marketing, and operational experience to accelerate learning and execution.
+        We focus on outcomes you can measure — activation, retention, and sustainable acquisition.
       </p>
     </section>
   );
@@ -233,20 +316,44 @@ function About() {
 function Services() {
   return (
     <section className="py-12">
-      <SectionHeader
-        eyebrow="What we do"
-        title="À La Carte Services for Startups"
-      />
+      <Helmet>
+  <title>Mac's Hub Services | Startup & Identity Solutions</title>
+  <meta
+    name="description"
+    content="Explore Mac's Hub services — from product strategy and growth support to legal identity services. Flexible, practical, and founder-focused."
+  />
+
+  {/* Open Graph */}
+  <meta property="og:title" content="Mac's Hub Services | Startup & Identity Solutions" />
+  <meta property="og:description" content="À la carte startup services and trusted identity solutions — built to get traction quickly and securely." />
+  <meta property="og:image" content="/images/newlogo.png" />
+  <meta property="og:url" content="https://yourdomain.com/services" />
+  <meta property="og:type" content="website" />
+
+  {/* Twitter */}
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Mac's Hub Services | Startup & Identity Solutions" />
+  <meta name="twitter:description" content="Startup consultancy and identity services you can trust. Practical, secure, and designed for growth." />
+  <meta name="twitter:image" content="/images/newlogo.png" />
+</Helmet>
+
+      <SectionHeader eyebrow="What we do" title="À La Carte Services for Startups" />
+
+      {/* Tagline before cards */}
+      <p className="mt-3 text-gray-700 max-w-3xl font-medium">
+        Practical services you can pick a la carte — built to get traction quickly.
+      </p>
+
       <div className="mt-8 grid md:grid-cols-3 gap-6">
         <ServiceCard
           icon={<Sparkles size={20} />}
           title="Product Strategy"
-          desc="Roadmaps, user research, and product prioritization to accelerate PMF."
+          desc="Roadmaps, user research, and prioritization to accelerate product-market fit."
         />
         <ServiceCard
           icon={<Target size={20} />}
           title="Go-to-Market Planning"
-          desc="Channel playbooks, positioning, and early growth experiments."
+          desc="Channel playbooks, positioning, and focused early experiments."
         />
         <ServiceCard
           icon={<Users size={20} />}
@@ -256,7 +363,7 @@ function Services() {
         <ServiceCard
           icon={<Lightbulb size={20} />}
           title="Business Ideation"
-          desc="Brainstorming, validation, and shaping new startup ideas."
+          desc="Idea validation, rapid prototyping, and early metrics guidance."
         />
         <ServiceCard
           icon={<Globe size={20} />}
@@ -266,17 +373,17 @@ function Services() {
         <ServiceCard
           icon={<DollarSign size={20} />}
           title="Fundraising Support"
-          desc="Pitch decks, investor connections, and capital strategy."
+          desc="Pitch decks, story-building, and investor readiness coaching."
         />
         <ServiceCard
           icon={<Briefcase size={20} />}
           title="Operations Setup"
-          desc="Legal, HR, and infrastructure setup for scaling businesses."
+          desc="Processes and tooling to scale operations without chaos."
         />
         <ServiceCard
           icon={<BookOpen size={20} />}
           title="Founder Coaching"
-          desc="One-on-one advisory sessions to help founders stay focused and resilient."
+          desc="Regular advisory sessions focused on prioritization & growth."
         />
       </div>
     </section>
@@ -286,107 +393,67 @@ function Services() {
 function IdentityServices() {
   return (
     <section className="py-12">
-      <SectionHeader
-        eyebrow="Identity Services"
-        title="Government & Legal Documentation Assistance"
-      />
-      <p className="mt-4 text-gray-600 max-w-3xl">
-        Beyond consultancy, Mac's Hub helps clients with essential documentation
-        services: passports, birth certificates, driver’s licenses, business
-        certificates, and select business operation permits. We ensure your
-        paperwork is handled professionally and efficiently, so you can focus on
-        your goals.
+<Helmet>
+  <title>Mac's Hub Identity Services | Secure Legal & Government Docs</title>
+  <meta
+    name="description"
+    content="Mac's Hub offers trusted assistance with passports, birth certificates, driver's licenses, business certificates, and permits. Secure, precise, and professional support for founders."
+  />
+
+  {/* Open Graph */}
+  <meta property="og:title" content="Mac's Hub Identity Services | Secure Legal & Government Docs" />
+  <meta property="og:description" content="Trusted handling of sensitive documents — passports, licenses, certificates, and more. Secure and reliable support for startups." />
+  <meta property="og:image" content="/images/newlogo.png" />
+  <meta property="og:url" content="https://yourdomain.com/services#identity" />
+  <meta property="og:type" content="website" />
+
+  {/* Twitter */}
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Mac's Hub Identity Services | Secure Legal & Government Docs" />
+  <meta name="twitter:description" content="Professional and secure document services — passports, licenses, and certificates handled with care." />
+  <meta name="twitter:image" content="/images/newlogo.png" />
+</Helmet>
+
+
+      <SectionHeader eyebrow="Identity Services" title="Government & Legal Documentation Assistance" />
+
+      {/* Trust-focused tagline */}
+      <p className="mt-2 text-gray-700 max-w-3xl font-medium">
+        Trusted handling of sensitive documents — precise, secure, and professional support.
       </p>
+
+      <p className="mt-4 text-gray-600 max-w-3xl">
+        We assist with passports, birth certificates, driver’s licenses, business certificates,
+        and selected permits. Our process emphasizes confidentiality and compliance — so paperwork
+        doesn't slow down your startup.
+      </p>
+
       <div className="mt-8 grid md:grid-cols-3 gap-6">
-        <ServiceCard
-          icon={<FileText size={20} />}
-          title="Passport Assistance"
-          desc="Guidance and application support for new or renewed passports."
-        />
-        <ServiceCard
-          icon={<FileText size={20} />}
-          title="Birth Certificates"
-          desc="Secure retrieval and processing of official birth records."
-        />
-        <ServiceCard
-          icon={<FileText size={20} />}
-          title="Driver’s Licenses"
-          desc="Application help and renewals with step-by-step guidance."
-        />
-        <ServiceCard
-          icon={<FileText size={20} />}
-          title="Business Certificates"
-          desc="Assistance in acquiring essential certificates to operate legally."
-        />
-        <ServiceCard
-          icon={<FileText size={20} />}
-          title="Permits"
-          desc="Support in obtaining select business operation permits quickly."
-        />
+        <ServiceCard icon={<FileText size={20} />} title="Passport Assistance" desc="Application support and renewals." />
+        <ServiceCard icon={<FileText size={20} />} title="Birth Certificates" desc="Secure retrieval and official processing." />
+        <ServiceCard icon={<FileText size={20} />} title="Driver’s Licenses" desc="Application help and renewals." />
+        <ServiceCard icon={<FileText size={20} />} title="Business Certificates" desc="Support to obtain required certificates." />
+        <ServiceCard icon={<FileText size={20} />} title="Permits" desc="Assistance acquiring select operational permits." />
       </div>
     </section>
   );
 }
 
-function Contact() {
-  return (
-    <section className="py-12">
-      <SectionHeader eyebrow="Contact" title="Let's work together" />
-
-      <div className="mt-6 grid gap-6 md:grid-cols-2">
-        {/* Contact Form */}
-        <ContactForm />
-
-        {/* Contact Links */}
-        <div className="flex flex-col gap-4 text-gray-700">
-          <a
-            href="tel:+233550103277"
-            className="flex items-center gap-2 text-indigo-600 hover:underline"
-          >
-            <Phone className="w-5 h-5" />
-            +233 (550) 103-277
-          </a>
-          <a
-            href="https://wa.me/233550103277"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 text-green-600 hover:underline"
-          >
-            <MessageCircle className="w-5 h-5" />
-            WhatsApp Chat
-          </a>
-          <a
-            href="https://www.tiktok.com/@macneroboss"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 text-pink-600 hover:underline"
-          >
-            <TikTokIcon className="w-5 h-5" />
-            TikTok Profile
-          </a>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ---------- Promotions ---------- */
+/* ---------- Promotions (carousel) ---------- */
 function Promotions() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const flyers = [
-    { src: "/images/flyer1buscert.png", desc: "Exclusive Startup Growth Workshop — Join us this weekend!" },
+    { src: "/images/flyer1buscert.png", desc: "Startup Growth Workshop — Join us this weekend." },
     { src: "/images/2.png", desc: "Special consultancy package for first-time founders." },
-    { src: "/images/3.png", desc: "Mac’s Hub client spotlight — see how we helped startups grow." },
+    { src: "/images/3.png", desc: "Client spotlight: case studies and outcomes." },
   ];
 
   useEffect(() => {
     if (flyers.length > 1) {
-      const interval = setInterval(() => {
-        setCurrentIndex((prev) => (prev + 1) % flyers.length);
-      }, 5000);
-      return () => clearInterval(interval);
+      const id = setInterval(() => setCurrentIndex((p) => (p + 1) % flyers.length), 5000);
+      return () => clearInterval(id);
     }
-  }, [flyers]);
+  }, [flyers.length]);
 
   return (
     <section className="py-12">
@@ -398,23 +465,22 @@ function Promotions() {
         >
           {flyers.map((flyer, idx) => (
             <div key={idx} className="w-full flex-shrink-0">
-              <div className="h-[300px] md:h-[500px] w-full">
+              <div className="h-[300px] md:h-[420px] w-full">
                 <img src={flyer.src} alt={`Flyer ${idx + 1}`} className="w-full h-full object-contain" />
               </div>
-              <p className="p-5 text-sm text-gray-600 text-center bg-gray-50">
-                {flyer.desc}
-              </p>
+              <p className="p-5 text-sm text-gray-600 text-center bg-gray-50">{flyer.desc}</p>
             </div>
           ))}
         </div>
+
+        {/* Dots */}
         <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
           {flyers.map((_, idx) => (
             <button
               key={idx}
               onClick={() => setCurrentIndex(idx)}
-              className={`w-3 h-3 rounded-full ${
-                idx === currentIndex ? "bg-indigo-600" : "bg-gray-300 hover:bg-gray-400"
-              }`}
+              aria-label={`Go to slide ${idx + 1}`}
+              className={`w-3 h-3 rounded-full ${idx === currentIndex ? "bg-indigo-600" : "bg-gray-300 hover:bg-gray-400"}`}
             />
           ))}
         </div>
@@ -454,10 +520,31 @@ function Testimonials() {
   );
 }
 
-/* ---------- Not Found ---------- */
+/* ---------- NotFound ---------- */
 function NotFound() {
   return (
     <section className="py-12 text-center">
+      <Helmet>
+  <title>Page Not Found | Mac's Hub</title>
+  <meta
+    name="description"
+    content="Oops! The page you’re looking for doesn’t exist. Return to Mac's Hub and explore how we can help your startup succeed."
+  />
+
+  {/* Open Graph */}
+  <meta property="og:title" content="Page Not Found | Mac's Hub" />
+  <meta property="og:description" content="The page you’re searching for isn’t here. Head back to Mac's Hub to learn more." />
+  <meta property="og:image" content="/images/newlogo.png" />
+  <meta property="og:url" content="https://yourdomain.com/404" />
+  <meta property="og:type" content="website" />
+
+  {/* Twitter */}
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Page Not Found | Mac's Hub" />
+  <meta name="twitter:description" content="This page doesn’t exist. Visit Mac's Hub homepage instead." />
+  <meta name="twitter:image" content="/images/newlogo.png" />
+</Helmet>
+
       <h2 className="text-2xl font-bold">Page Not Found</h2>
       <p className="mt-2 text-gray-600">The page you’re looking for doesn’t exist.</p>
     </section>
@@ -501,32 +588,157 @@ function GalleryImage({ src, alt }) {
   );
 }
 
+import { useState } from "react";
+import { Helmet } from "react-helmet-async";
+
 function ContactForm() {
+  const [formState, setFormState] = useState({ name: "", email: "", message: "" });
+  const [errors, setErrors] = useState({});
+  const [toast, setToast] = useState(null);
+
+  const validate = () => {
+    const e = {};
+    if (!formState.name.trim()) e.name = "Please enter your name.";
+    if (!formState.email.trim()) {
+      e.email = "Please enter your email.";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formState.email)) {
+      e.email = "Please enter a valid email address.";
+    }
+    if (!formState.message.trim()) e.message = "Please tell us about your challenge.";
+    else if (formState.message.trim().length < 10) e.message = "Please provide a bit more detail (min 10 chars).";
+    return e;
+  };
+
+  const handleChange = (e) => {
+    setFormState((s) => ({ ...s, [e.target.name]: e.target.value }));
+    setErrors((err) => ({ ...err, [e.target.name]: undefined }));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    const form = new FormData(e.target);
-    const name = form.get("name") || "";
-    const email = form.get("email") || "";
-    const message = form.get("message") || "";
-    const subject = encodeURIComponent(`Chat request from ${name} — Mac's Hub`);
-    const body = encodeURIComponent(message + "\n\nContact: " + email);
-    window.location.href = `mailto:macshubcompany@gmail.com?subject=${subject}&body=${body}`;
+    const validation = validate();
+    setErrors(validation);
+
+    if (Object.keys(validation).length === 0) {
+      // Trigger email client
+      const subject = encodeURIComponent(`Inquiry from ${formState.name} — Mac's Hub`);
+      const body = encodeURIComponent(`${formState.message}\n\nContact: ${formState.email}`);
+      window.location.href = `mailto:macshubcompany@gmail.com?subject=${subject}&body=${body}`;
+
+      // Show toast
+      setToast("✅ Your message has been sent successfully!");
+      setTimeout(() => setToast(null), 4000);
+
+      // Reset form
+      setFormState({ name: "", email: "", message: "" });
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md w-full grid gap-3">
-      <input name="name" required placeholder="Your name" className="px-4 py-3 rounded-lg border border-gray-200" />
-      <input name="email" type="email" required placeholder="Email" className="px-4 py-3 rounded-lg border border-gray-200" />
-      <textarea name="message" rows={4} placeholder="Tell us about your challenge" className="px-4 py-3 rounded-lg border border-gray-200" />
-      <button type="submit" className="px-5 py-3 rounded-full bg-indigo-600 text-white font-medium">Schedule call</button>
-    </form>
+    <div className="relative">
+      {/* SEO Metadata for Contact Page */}
+      <Helmet>
+        <title>Contact Us | Mac's Hub Startup Consultancy</title>
+        <meta
+          name="description"
+          content="Get in touch with Mac's Hub today. Reach out via email, phone, or WhatsApp to discuss your startup challenges and discover how we can help you succeed."
+        />
+        {/* Open Graph */}
+        <meta property="og:title" content="Contact Us | Mac's Hub" />
+        <meta
+          property="og:description"
+          content="Mac's Hub is here to support your startup journey. Contact us today."
+        />
+        <meta property="og:image" content="/images/newlogo.png" />
+        <meta property="og:url" content="https://yourdomain.com/contact" />
+        <meta property="og:type" content="website" />
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Contact Mac's Hub" />
+        <meta
+          name="twitter:description"
+          content="Get in touch with Mac's Hub today. We're here to help startups thrive."
+        />
+        <meta name="twitter:image" content="/images/newlogo.png" />
+      </Helmet>
+
+      <form onSubmit={handleSubmit} noValidate className="max-w-md w-full grid gap-3">
+        <input
+          id="name"
+          name="name"
+          value={formState.name}
+          onChange={handleChange}
+          placeholder="Your name"
+          aria-label="Name"
+          aria-invalid={!!errors.name}
+          aria-describedby={errors.name ? "name-error" : undefined}
+          className={`px-4 py-3 rounded-lg border ${errors.name ? "border-red-300" : "border-gray-200"}`}
+        />
+        {errors.name && <div id="name-error" className="text-xs text-red-600">{errors.name}</div>}
+
+        <input
+          id="email"
+          name="email"
+          type="email"
+          value={formState.email}
+          onChange={handleChange}
+          placeholder="Email"
+          aria-label="Email"
+          aria-invalid={!!errors.email}
+          aria-describedby={errors.email ? "email-error" : undefined}
+          className={`px-4 py-3 rounded-lg border ${errors.email ? "border-red-300" : "border-gray-200"}`}
+        />
+        {errors.email && <div id="email-error" className="text-xs text-red-600">{errors.email}</div>}
+
+        <textarea
+          id="message"
+          name="message"
+          rows={4}
+          value={formState.message}
+          onChange={handleChange}
+          placeholder="Tell us about your challenge"
+          aria-label="Message"
+          aria-invalid={!!errors.message}
+          aria-describedby={errors.message ? "message-error" : undefined}
+          className={`px-4 py-3 rounded-lg border ${errors.message ? "border-red-300" : "border-gray-200"}`}
+        />
+        {errors.message && <div id="message-error" className="text-xs text-red-600">{errors.message}</div>}
+
+        <button
+          type="submit"
+          disabled={!!toast}
+          className={`px-5 py-3 rounded-full font-medium transition ${
+            toast
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-indigo-600 text-white hover:bg-indigo-700"
+          }`}
+        >
+          Send Inquiry
+        </button>
+      </form>
+
+      {/* Toast Notification */}
+      {toast && (
+        <div
+          className="fixed bottom-5 right-5 bg-indigo-600 text-white px-4 py-2 rounded-lg shadow-lg animate-fade-in"
+          aria-live="polite"
+        >
+          {toast}
+        </div>
+      )}
+    </div>
   );
 }
 
+export default ContactForm;
+
+
+
+/* ---------- Tiny SVG TikTok Icon ---------- */
 function TikTokIcon({ className }) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 448 512" className={className}>
-      <path d="M448,209.9a210,210,0,0,1-122.5-39.2V349.4c0,90.2-73.3,162.6-163.5,162.6A162.6,162.6,0,0,1,0,349.4c0-90.2,73.3-163.5,162.5-163.5a163.2,163.2,0,0,1,24.1,1.8v81.5a81.9,81.9,0,0,0-24.1-3.8A81.1,81.1,0,1,0,244,349.4V0h81.5a128.6,128.6,0,0,0,122.5,128.5Z"/>
+      <path d="M448,209.9a210,210,0,0,1-122.5-39.2V349.4c0,90.2-73.3,162.6-163.5,162.6A162.6,162.6,0,0,1,0,349.4c0-90.2,73.3-163.5,162.5-163.5a163.2,163.2,0,0,1,24.1,1.8v81.5a81.9,81.9,0,0,0-24.1-3.8A81.1,81.1,0,1,0,244,349.4V0h81.5a128.6,128.6,0,0,0,122.5,128.5Z" />
     </svg>
   );
 }

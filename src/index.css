@@ -5,3 +5,23 @@
 body {
   @apply bg-gray-50 text-gray-900;
 }
+
+/* Smooth fade-in only (already working) */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+
+/* New: Fade in, hold, then fade out */
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateY(20px); }
+  10% { opacity: 1; transform: translateY(0); }
+  90% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(20px); }
+}
+.toast {
+  animation: fadeInOut 4s ease forwards;
+}
