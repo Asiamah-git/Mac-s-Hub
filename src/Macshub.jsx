@@ -10,8 +10,8 @@ import {
   Briefcase,
   BookOpen,
   FileText,
-  ChevronLeft,
-  ChevronRight,
+  Menu,
+  X,
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -27,6 +27,7 @@ function ScrollToTop() {
 /* ---------- Main Layout ---------- */
 export default function MacsHub() {
   const location = useLocation();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50 text-gray-900 antialiased">
@@ -34,22 +35,65 @@ export default function MacsHub() {
 
       {/* NAV */}
       <header className="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
-        {/* Logo Clickable */}
+        {/* Logo */}
         <NavLink to="/" className="flex items-center gap-4 cursor-pointer">
           <img
-            src="images/logo.png"
+            src="images/newlogo.png"
             alt="Mac's Hub Logo"
-            className="h-40 w-auto object-contain" // 🔹 Bigger logo
+            className="h-16 md:h-20 w-auto object-contain"
           />
         </NavLink>
 
-        {/* Navigation */}
+        {/* Desktop Nav */}
         <nav className="hidden md:flex gap-6 items-center text-sm text-gray-700">
           <NavItem to="/about" label="About Us" />
           <NavItem to="/services" label="Services" />
           <NavItem to="/contact" label="Contact Us" isButton />
         </nav>
+
+        {/* Mobile Hamburger */}
+        <button
+          className="md:hidden p-2 rounded-lg bg-gray-100 hover:bg-gray-200"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+        </button>
       </header>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.nav
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}
+            className="md:hidden bg-white shadow-lg rounded-2xl mx-4 mt-2 p-6 flex flex-col gap-4 text-sm"
+          >
+            <NavLink
+              to="/about"
+              onClick={() => setMenuOpen(false)}
+              className="hover:text-indigo-600"
+            >
+              About Us
+            </NavLink>
+            <NavLink
+              to="/services"
+              onClick={() => setMenuOpen(false)}
+              className="hover:text-indigo-600"
+            >
+              Services
+            </NavLink>
+            <NavLink
+              to="/contact"
+              onClick={() => setMenuOpen(false)}
+              className="px-4 py-2 bg-indigo-600 text-white rounded-full text-center hover:opacity-95"
+            >
+              Contact Us
+            </NavLink>
+          </motion.nav>
+        )}
+      </AnimatePresence>
 
       {/* Routes with smooth transitions */}
       <main className="max-w-6xl mx-auto px-6">
@@ -108,8 +152,12 @@ export default function MacsHub() {
               <span>© {new Date().getFullYear()} Mac's Hub</span>
             </div>
             <div className="flex gap-4">
-              <a href="#" className="hover:text-gray-900">Privacy</a>
-              <a href="#" className="hover:text-gray-900">Terms</a>
+              <a href="#" className="hover:text-gray-900">
+                Privacy
+              </a>
+              <a href="#" className="hover:text-gray-900">
+                Terms
+              </a>
             </div>
           </div>
         </footer>
@@ -118,7 +166,7 @@ export default function MacsHub() {
   );
 }
 
-/* ---------- NavItem (Active Styling) ---------- */
+/* ---------- NavItem ---------- */
 function NavItem({ to, label, isButton }) {
   return (
     <NavLink
@@ -173,23 +221,51 @@ function About() {
   );
 }
 
-/* ---------- Rest of your sections stay the same (Services, IdentityServices, Contact, Promotions, Gallery, Testimonials, NotFound, and Subcomponents) ---------- */
-// keep your existing code for those sections unchanged, only logo size + transitions updated above
-
-
 function Services() {
   return (
     <section className="py-12">
       <SectionHeader eyebrow="What we do" title="À La Carte Services for Startups" />
       <div className="mt-8 grid md:grid-cols-3 gap-6">
-        <ServiceCard icon={<Sparkles size={20} />} title="Product Strategy" desc="Roadmaps, user research, and product prioritization to accelerate PMF." />
-        <ServiceCard icon={<Target size={20} />} title="Go-to-Market Planning" desc="Channel playbooks, positioning, and early growth experiments." />
-        <ServiceCard icon={<Users size={20} />} title="Fractional Leadership" desc="Interim CTO/CMO/CPO to lead execution while you hire full-time." />
-        <ServiceCard icon={<Lightbulb size={20} />} title="Business Ideation" desc="Brainstorming, validation, and shaping new startup ideas." />
-        <ServiceCard icon={<Globe size={20} />} title="Market Research" desc="Competitive analysis, customer discovery, and insight reports." />
-        <ServiceCard icon={<DollarSign size={20} />} title="Fundraising Support" desc="Pitch decks, investor connections, and capital strategy." />
-        <ServiceCard icon={<Briefcase size={20} />} title="Operations Setup" desc="Legal, HR, and infrastructure setup for scaling businesses." />
-        <ServiceCard icon={<BookOpen size={20} />} title="Founder Coaching" desc="One-on-one advisory sessions to help founders stay focused and resilient." />
+        <ServiceCard
+          icon={<Sparkles size={20} />}
+          title="Product Strategy"
+          desc="Roadmaps, user research, and product prioritization to accelerate PMF."
+        />
+        <ServiceCard
+          icon={<Target size={20} />}
+          title="Go-to-Market Planning"
+          desc="Channel playbooks, positioning, and early growth experiments."
+        />
+        <ServiceCard
+          icon={<Users size={20} />}
+          title="Fractional Leadership"
+          desc="Interim CTO/CMO/CPO to lead execution while you hire full-time."
+        />
+        <ServiceCard
+          icon={<Lightbulb size={20} />}
+          title="Business Ideation"
+          desc="Brainstorming, validation, and shaping new startup ideas."
+        />
+        <ServiceCard
+          icon={<Globe size={20} />}
+          title="Market Research"
+          desc="Competitive analysis, customer discovery, and insight reports."
+        />
+        <ServiceCard
+          icon={<DollarSign size={20} />}
+          title="Fundraising Support"
+          desc="Pitch decks, investor connections, and capital strategy."
+        />
+        <ServiceCard
+          icon={<Briefcase size={20} />}
+          title="Operations Setup"
+          desc="Legal, HR, and infrastructure setup for scaling businesses."
+        />
+        <ServiceCard
+          icon={<BookOpen size={20} />}
+          title="Founder Coaching"
+          desc="One-on-one advisory sessions to help founders stay focused and resilient."
+        />
       </div>
     </section>
   );
@@ -198,7 +274,10 @@ function Services() {
 function IdentityServices() {
   return (
     <section className="py-12">
-      <SectionHeader eyebrow="Identity Services" title="Government & Legal Documentation Assistance" />
+      <SectionHeader
+        eyebrow="Identity Services"
+        title="Government & Legal Documentation Assistance"
+      />
       <p className="mt-4 text-gray-600 max-w-3xl">
         Beyond consultancy, Mac's Hub helps clients with essential documentation
         services: passports, birth certificates, driver’s licenses, business
@@ -207,11 +286,31 @@ function IdentityServices() {
         your goals.
       </p>
       <div className="mt-8 grid md:grid-cols-3 gap-6">
-        <ServiceCard icon={<FileText size={20} />} title="Passport Assistance" desc="Guidance and application support for new or renewed passports." />
-        <ServiceCard icon={<FileText size={20} />} title="Birth Certificates" desc="Secure retrieval and processing of official birth records." />
-        <ServiceCard icon={<FileText size={20} />} title="Driver’s Licenses" desc="Application help and renewals with step-by-step guidance." />
-        <ServiceCard icon={<FileText size={20} />} title="Business Certificates" desc="Assistance in acquiring essential certificates to operate legally." />
-        <ServiceCard icon={<FileText size={20} />} title="Permits" desc="Support in obtaining select business operation permits quickly." />
+        <ServiceCard
+          icon={<FileText size={20} />}
+          title="Passport Assistance"
+          desc="Guidance and application support for new or renewed passports."
+        />
+        <ServiceCard
+          icon={<FileText size={20} />}
+          title="Birth Certificates"
+          desc="Secure retrieval and processing of official birth records."
+        />
+        <ServiceCard
+          icon={<FileText size={20} />}
+          title="Driver’s Licenses"
+          desc="Application help and renewals with step-by-step guidance."
+        />
+        <ServiceCard
+          icon={<FileText size={20} />}
+          title="Business Certificates"
+          desc="Assistance in acquiring essential certificates to operate legally."
+        />
+        <ServiceCard
+          icon={<FileText size={20} />}
+          title="Permits"
+          desc="Support in obtaining select business operation permits quickly."
+        />
       </div>
     </section>
   );
@@ -229,24 +328,13 @@ function Contact() {
 }
 
 /* ---------- Promotions Carousel ---------- */
-/* ---------- Promotions Carousel ---------- */
 function Promotions() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // ✅ Use images from /public/images/
   const flyers = [
-    {
-      src: "/images/flyer1buscert.png",
-      desc: "Exclusive Startup Growth Workshop — Join us this weekend!",
-    },
-    {
-      src: "/images/2.png",
-      desc: "Special consultancy package for first-time founders.",
-    },
-    {
-      src: "/images/3.png",
-      desc: "Mac’s Hub client spotlight — see how we helped startups grow.",
-    },
+    { src: "/images/flyer1buscert.png", desc: "Exclusive Startup Growth Workshop — Join us this weekend!" },
+    { src: "/images/2.png", desc: "Special consultancy package for first-time founders." },
+    { src: "/images/3.png", desc: "Mac’s Hub client spotlight — see how we helped startups grow." },
   ];
 
   useEffect(() => {
@@ -305,20 +393,18 @@ function Promotions() {
   );
 }
 
-
 /* ---------- Gallery ---------- */
 function Gallery() {
   return (
     <section className="py-12">
       <SectionHeader eyebrow="Gallery" title="A glimpse of our journey" />
       <div className="mt-8 grid md:grid-cols-3 gap-6">
-       <GalleryImage src="/images/contract.jpg" alt="Mac's Hub Branding" />
-<GalleryImage src="/images/branded_meeting.png" alt="Collaboration and teamwork" />
-<GalleryImage src="/images/branded_discussion.png" alt="Strategic planning session" />
-<GalleryImage src="/images/office space.jpg" alt="Startup growth concept" />
-<GalleryImage src="/images/paperwork.jpg" alt="Document assistance" />
-<GalleryImage src="/images/team work.jpg" alt="Innovation and vision" />
-
+        <GalleryImage src="/images/contract.jpg" alt="Mac's Hub Branding" />
+        <GalleryImage src="/images/branded_meeting.png" alt="Collaboration and teamwork" />
+        <GalleryImage src="/images/branded_discussion.png" alt="Strategic planning session" />
+        <GalleryImage src="/images/office space.jpg" alt="Startup growth concept" />
+        <GalleryImage src="/images/paperwork.jpg" alt="Document assistance" />
+        <GalleryImage src="/images/team work.jpg" alt="Innovation and vision" />
       </div>
     </section>
   );
@@ -330,9 +416,18 @@ function Testimonials() {
     <section className="py-12">
       <SectionHeader eyebrow="Trusted by" title="What founders say" />
       <div className="mt-8 grid md:grid-cols-3 gap-6">
-        <Testimonial name="Lina — Co-founder" quote="Mac's Hub helped us crystallize our product strategy and double activation in three months." />
-        <Testimonial name="Raj — CEO" quote="They acted as an extension of our team — clear, fast, and measurable." />
-        <Testimonial name="Maya — Head of Growth" quote="From hiring to experiments, their support was pivotal to our Series A." />
+        <Testimonial
+          name="Lina — Co-founder"
+          quote="Mac's Hub helped us crystallize our product strategy and double activation in three months."
+        />
+        <Testimonial
+          name="Raj — CEO"
+          quote="They acted as an extension of our team — clear, fast, and measurable."
+        />
+        <Testimonial
+          name="Maya — Head of Growth"
+          quote="From hiring to experiments, their support was pivotal to our Series A."
+        />
       </div>
     </section>
   );
@@ -343,7 +438,9 @@ function NotFound() {
   return (
     <section className="py-12 text-center">
       <h2 className="text-2xl font-bold">Page Not Found</h2>
-      <p className="mt-2 text-gray-600">The page you’re looking for doesn’t exist.</p>
+      <p className="mt-2 text-gray-600">
+        The page you’re looking for doesn’t exist.
+      </p>
     </section>
   );
 }
@@ -361,7 +458,9 @@ function SectionHeader({ eyebrow, title }) {
 function ServiceCard({ icon, title, desc }) {
   return (
     <article className="p-6 rounded-2xl bg-white shadow hover:shadow-lg transition-shadow">
-      <div className="w-12 h-12 rounded-md bg-indigo-50 flex items-center justify-center">{icon}</div>
+      <div className="w-12 h-12 rounded-md bg-indigo-50 flex items-center justify-center">
+        {icon}
+      </div>
       <h4 className="mt-4 font-semibold">{title}</h4>
       <p className="mt-2 text-sm text-gray-600">{desc}</p>
     </article>
@@ -399,10 +498,31 @@ function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="max-w-md w-full grid gap-3">
-      <input name="name" required placeholder="Your name" className="px-4 py-3 rounded-lg border border-gray-200" />
-      <input name="email" type="email" required placeholder="Email" className="px-4 py-3 rounded-lg border border-gray-200" />
-      <textarea name="message" rows={4} placeholder="Tell us about your challenge" className="px-4 py-3 rounded-lg border border-gray-200" />
-      <button type="submit" className="px-5 py-3 rounded-full bg-indigo-600 text-white font-medium">Schedule call</button>
+      <input
+        name="name"
+        required
+        placeholder="Your name"
+        className="px-4 py-3 rounded-lg border border-gray-200"
+      />
+      <input
+        name="email"
+        type="email"
+        required
+        placeholder="Email"
+        className="px-4 py-3 rounded-lg border border-gray-200"
+      />
+      <textarea
+        name="message"
+        rows={4}
+        placeholder="Tell us about your challenge"
+        className="px-4 py-3 rounded-lg border border-gray-200"
+      />
+      <button
+        type="submit"
+        className="px-5 py-3 rounded-full bg-indigo-600 text-white font-medium"
+      >
+        Schedule call
+      </button>
     </form>
   );
 }
