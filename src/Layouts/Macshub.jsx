@@ -11,8 +11,8 @@ import NotFound from "../pages/NotFound";
 import ContactForm from "../ContactForm";
 
 // Components
-import NavItem from "../components/NavItem";
-import TikTokIcon from "../components/TikTokIcon";
+import NavItem from "../components/NavItems";
+import TikTokIcon from "../components/Tik";
 
 function ScrollToTop() {
   const { pathname } = useLocation();

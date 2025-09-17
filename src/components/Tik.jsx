@@ -1,4 +1,4 @@
-export default function TikTokIcon({ className = "" }) {
+export default function Tik({ className = "" }) {
   return (
     <svg
       className={className}

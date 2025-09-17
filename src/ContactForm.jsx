@@ -1,133 +1,106 @@
-// src/components/ContactForm.jsx
-import { useState } from "react";
-import { Helmet } from "react-helmet-async";
+import { useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 export default function ContactForm() {
-  const [formState, setFormState] = useState({ name: "", email: "", message: "" });
-  const [errors, setErrors] = useState({});
-  const [toast, setToast] = useState(null);
+  const location = useLocation();
+  const serviceFromRoute = location.state?.service || "";
 
-  const validate = () => {
-    const e = {};
-    if (!formState.name.trim()) e.name = "Please enter your name.";
-    if (!formState.email.trim()) {
-      e.email = "Please enter your email.";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formState.email)) {
-      e.email = "Please enter a valid email address.";
+  const [service, setService] = useState(serviceFromRoute);
+  const [message, setMessage] = useState("");
+
+  // Set default message when service comes from ServiceCard
+  useEffect(() => {
+    if (serviceFromRoute) {
+      setMessage(`Hello, I’m interested in the ${serviceFromRoute} service.`);
     }
-    if (!formState.message.trim()) e.message = "Please tell us about your challenge.";
-    else if (formState.message.trim().length < 10) e.message = "Please provide a bit more detail (min 10 chars).";
-    return e;
-  };
+  }, [serviceFromRoute]);
 
-  const handleChange = (e) => {
-    setFormState((s) => ({ ...s, [e.target.name]: e.target.value }));
-    setErrors((err) => ({ ...err, [e.target.name]: undefined }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const validation = validate();
-    setErrors(validation);
-
-    if (Object.keys(validation).length === 0) {
-      const subject = encodeURIComponent(`Inquiry from ${formState.name} — Mac's Hub`);
-      const body = encodeURIComponent(`${formState.message}\n\nContact: ${formState.email}`);
-      window.location.href = `mailto:macshubcompany@gmail.com?subject=${subject}&body=${body}`;
-
-      setToast("✅ Your message has been sent successfully!");
-      setTimeout(() => setToast(null), 4000);
-
-      setFormState({ name: "", email: "", message: "" });
-    }
-  };
+  const services = [
+    "Product Strategy",
+    "Go-to-Market Planning",
+    "Fractional Leadership",
+    "Business Ideation",
+    "Market Research",
+    "Fundraising Support",
+    "Operations Setup",
+    "Founder Coaching",
+    "Passport Assistance",
+    "Birth Certificates",
+    "Driver’s Licenses",
+    "Business Certificates",
+    "Permits",
+  ];
 
   return (
-    <div className="relative">
-      {/* SEO Metadata for Contact Page */}
-      <Helmet>
-        <title>Contact Us | Mac's Hub Startup Consultancy</title>
-        <meta
-          name="description"
-          content="Get in touch with Mac's Hub today. Reach out via email, phone, or WhatsApp to discuss your startup challenges and discover how we can help you succeed."
-        />
-        {/* Open Graph */}
-        <meta property="og:title" content="Contact Us | Mac's Hub" />
-        <meta property="og:description" content="Mac's Hub is here to support your startup journey. Contact us today." />
-        <meta property="og:image" content="/images/newlogo.png" />
-        <meta property="og:url" content="https://yourdomain.com/contact" />
-        <meta property="og:type" content="website" />
-        {/* Twitter */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Contact Mac's Hub" />
-        <meta name="twitter:description" content="Get in touch with Mac's Hub today. We're here to help startups thrive." />
-        <meta name="twitter:image" content="/images/newlogo.png" />
-      </Helmet>
+    <form className="max-w-2xl mx-auto p-6 bg-white rounded-2xl shadow">
+      <h2 className="text-2xl font-bold mb-6">Contact Us</h2>
 
-      <form onSubmit={handleSubmit} noValidate className="max-w-md w-full grid gap-3">
+      {/* Name */}
+      <div className="mb-4">
+        <label className="block text-sm font-medium text-gray-700">Name</label>
         <input
-          id="name"
-          name="name"
-          value={formState.name}
-          onChange={handleChange}
-          placeholder="Your name"
-          aria-label="Name"
-          aria-invalid={!!errors.name}
-          aria-describedby={errors.name ? "name-error" : undefined}
-          className={`px-4 py-3 rounded-lg border ${errors.name ? "border-red-300" : "border-gray-200"}`}
+          type="text"
+          required
+          className="mt-1 w-full border rounded-lg px-3 py-2"
+          placeholder="Your full name"
         />
-        {errors.name && <div id="name-error" className="text-xs text-red-600">{errors.name}</div>}
+      </div>
 
+      {/* Email */}
+      <div className="mb-4">
+        <label className="block text-sm font-medium text-gray-700">Email</label>
         <input
-          id="email"
-          name="email"
           type="email"
-          value={formState.email}
-          onChange={handleChange}
-          placeholder="Email"
-          aria-label="Email"
-          aria-invalid={!!errors.email}
-          aria-describedby={errors.email ? "email-error" : undefined}
-          className={`px-4 py-3 rounded-lg border ${errors.email ? "border-red-300" : "border-gray-200"}`}
+          required
+          className="mt-1 w-full border rounded-lg px-3 py-2"
+          placeholder="you@example.com"
         />
-        {errors.email && <div id="email-error" className="text-xs text-red-600">{errors.email}</div>}
+      </div>
 
+      {/* Service Dropdown */}
+      <div className="mb-4">
+        <label className="block text-sm font-medium text-gray-700">Service</label>
+        <select
+          className="mt-1 w-full border rounded-lg px-3 py-2"
+          value={service}
+          onChange={(e) => {
+            setService(e.target.value);
+            setMessage(
+              e.target.value
+                ? `Hello, I’m interested in the ${e.target.value} service.`
+                : ""
+            );
+          }}
+        >
+          <option value="">Select a service</option>
+          {services.map((s) => (
+            <option key={s} value={s}>
+              {s}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Message */}
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-gray-700">Message</label>
         <textarea
-          id="message"
-          name="message"
-          rows={4}
-          value={formState.message}
-          onChange={handleChange}
-          placeholder="Tell us about your challenge"
-          aria-label="Message"
-          aria-invalid={!!errors.message}
-          aria-describedby={errors.message ? "message-error" : undefined}
-          className={`px-4 py-3 rounded-lg border ${errors.message ? "border-red-300" : "border-gray-200"}`}
+          rows={5}
+          required
+          className="mt-1 w-full border rounded-lg px-3 py-2"
+          placeholder="Write your message..."
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
         />
-        {errors.message && <div id="message-error" className="text-xs text-red-600">{errors.message}</div>}
+      </div>
 
-        <button
-          type="submit"
-          disabled={!!toast}
-          className={`px-5 py-3 rounded-full font-medium transition ${
-            toast
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-indigo-600 text-white hover:bg-indigo-700"
-          }`}
-        >
-          Send Inquiry
-        </button>
-      </form>
-
-      {/* Toast Notification */}
-      {toast && (
-        <div
-          className="fixed bottom-5 right-5 bg-indigo-600 text-white px-4 py-2 rounded-lg shadow-lg animate-fade-in"
-          aria-live="polite"
-        >
-          {toast}
-        </div>
-      )}
-    </div>
+      {/* Submit */}
+      <button
+        type="submit"
+        className="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition"
+      >
+        Send Message
+      </button>
+    </form>
   );
 }
