@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import MacsHub from "./Macshub";
+import MacsHub from "./Layouts/Macshub";
 
 export default function App() {
   return (
